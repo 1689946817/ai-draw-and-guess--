@@ -56,6 +56,76 @@
 └── package.json         # 项目配置
 ```
 
+## GitHub Pages 部署指南
+
+本文档记录了将项目部署到 GitHub Pages 的完整流程，以及解决过程中遇到的关键问题。
+
+### 部署步骤
+
+1. 安装部署工具
+```bash
+npm install gh-pages --save-dev
+```
+
+2. 在 `package.json` 中添加部署脚本
+```json
+{
+  "scripts": {
+    "deploy": "npm run build && gh-pages -d dist"
+  }
+}
+```
+
+3. 修改 `vite.config.ts` 中的基础路径配置
+```typescript
+export default defineConfig({
+  base: './',  // 这一步很关键！确保资源使用相对路径
+  // ...其他配置
+})
+```
+
+4. 执行部署命令
+```bash
+npm run deploy
+```
+
+5. 在 GitHub 仓库设置中:
+   - 进入 Settings > Pages
+   - Source 选择 "Deploy from a branch"
+   - Branch 选择 "gh-pages" 分支
+   - 点击 Save
+
+### 部署问题解析
+
+在部署过程中，我们遇到了以下关键问题：
+
+1. 初次部署失败的原因：
+   - 没有使用专门的部署工具（gh-pages）
+   - 资源路径配置不正确（没有设置 base: './'）
+   - 手动管理分支容易出错
+   - 部署流程不规范
+
+2. 最终成功的关键因素：
+   - 使用 gh-pages 工具自动管理部署
+   - 正确配置资源基础路径（base: './'）
+   - 规范化的部署流程（npm run deploy）
+   - 工具自动处理 gh-pages 分支
+
+### 参考资料
+
+- [GitHub Pages 部署教程](https://blog.csdn.net/qq_20042935/article/details/133920722)
+- [Vue项目部署到 GitHub Pages](https://blog.csdn.net/zuo_kaizheng/article/details/121659587)
+
+### 维护说明
+
+后续如需更新网站内容：
+
+1. 本地修改代码
+2. 运行 `npm run deploy` 命令
+3. 等待几分钟后访问 GitHub Pages 地址即可看到更新
+
+注意：部署后可能需要等待几分钟才能看到更新，这是正常现象。
+
 ## 贡献指南
 
 欢迎提交 Issue 和 Pull Request 来帮助改进项目。
